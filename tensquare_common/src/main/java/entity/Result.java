@@ -9,7 +9,7 @@ public class Result {
     /** 是否成功 */
     private boolean flag;
     /** 返回码 */
-    private Integer code;
+    private String code;
     /** 返回信息 */
     private String message;
     /** 返回数据 */
@@ -18,13 +18,13 @@ public class Result {
     public Result() {
     }
 
-    public Result(boolean flag, Integer code, String message) {
+    public Result(boolean flag, String code, String message) {
         this.flag = flag;
         this.code = code;
         this.message = message;
     }
 
-    public Result(boolean flag, Integer code, String message, Object data) {
+    public Result(boolean flag, String code, String message, Object data) {
         this.flag = flag;
         this.code = code;
         this.message = message;
@@ -39,11 +39,11 @@ public class Result {
         this.flag = flag;
     }
 
-    public Integer getCode() {
+    public String getCode() {
         return code;
     }
 
-    public void setCode(Integer code) {
+    public void setCode(String code) {
         this.code = code;
     }
 

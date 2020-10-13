@@ -4,7 +4,7 @@ import com.tensquare.base.pojo.Label;
 import com.tensquare.base.service.LabelService;
 import entity.PageResult;
 import entity.Result;
-import entity.StatusCode;
+import enums.ResultEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +29,12 @@ public class LabelController {
      */
     @RequestMapping(method = RequestMethod.GET)
     public Result findAll() {
-        return new Result(true, StatusCode.OK, "查询成功", labelService.findAll());
+        return new Result(
+                true,
+                ResultEnum.QUERY_SUCCESS.getCode(),
+                ResultEnum.QUERY_SUCCESS.getMsg(),
+                labelService.findAll()
+        );
     }
 
     /**
@@ -39,7 +44,12 @@ public class LabelController {
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public Result findById(@PathVariable String id) {
-        return new Result(true, StatusCode.OK, "查询成功", labelService.findById(id));
+        return new Result(
+                true,
+                ResultEnum.QUERY_SUCCESS.getCode(),
+                ResultEnum.QUERY_SUCCESS.getMsg(),
+                labelService.findById(id)
+        );
     }
 
     /**
@@ -50,7 +60,11 @@ public class LabelController {
     @RequestMapping(method = RequestMethod.POST)
     public Result add(@RequestBody Label label) {
         labelService.add(label);
-        return new Result(true, StatusCode.OK, "增加成功");
+        return new Result(
+                true,
+                ResultEnum.ADD_SUCCESS.getCode(),
+                ResultEnum.ADD_SUCCESS.getMsg()
+        );
     }
 
     /**
@@ -62,7 +76,11 @@ public class LabelController {
     public Result update(@RequestBody Label label, @PathVariable String id) {
         label.setId(id);
         labelService.update(label);
-        return new Result(true, StatusCode.OK, "修改成功");
+        return new Result(
+                true,
+                ResultEnum.EDIT_SUCCESS.getCode(),
+                ResultEnum.EDIT_SUCCESS.getMsg()
+        );
     }
 
     /**
@@ -73,7 +91,11 @@ public class LabelController {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public Result deleteById(@PathVariable String id) {
         labelService.deleteById(id);
-        return new Result(true, StatusCode.OK, "删除成功");
+        return new Result(
+                true,
+                ResultEnum.DEL_SUCCESS.getCode(),
+                ResultEnum.DEL_SUCCESS.getMsg()
+        );
     }
 
     /**
@@ -83,7 +105,12 @@ public class LabelController {
      */
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     public Result findSearch(@RequestBody Map searchMap) {
-        return new Result(true, StatusCode.OK, "查询成功", labelService.findSearch(searchMap));
+        return new Result(
+                true,
+                ResultEnum.QUERY_SUCCESS.getCode(),
+                ResultEnum.QUERY_SUCCESS.getMsg(),
+                labelService.findSearch(searchMap)
+        );
     }
 
     /**
@@ -98,8 +125,8 @@ public class LabelController {
         Page pageList = labelService.findSearch(searchMap, page, size);
         return new Result(
                 true,
-                StatusCode.OK,
-                "查询成功",
+                ResultEnum.QUERY_SUCCESS.getCode(),
+                ResultEnum.QUERY_SUCCESS.getMsg(),
                 new PageResult<>(pageList.getTotalElements(), pageList.getContent())
         );
     }
