@@ -114,4 +114,17 @@ public class LabelService {
         };
     }
 
+    /**
+     * 分页条件查询
+     * @param searchMap
+     * @param page
+     * @param size
+     * @return
+     */
+    public Page<Label> findSearch(Map searchMap, int page, int size) {
+        Specification specification = createSpecification(searchMap);
+        PageRequest pageRequest = PageRequest.of(page - 1, size);
+        return labelDao.findAll(specification, pageRequest);
+    }
+
 }
