@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
  * @since 2020/10/13 17:06
  */
 @RestController
+@CrossOrigin
 @RequestMapping("/label")
 public class LabelController {
     @Autowired
