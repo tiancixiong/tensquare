@@ -1,26 +1,21 @@
 package com.tensquare.recruit.controller;
 
-import java.util.Map;
-
+import com.tensquare.recruit.pojo.Recruit;
+import com.tensquare.recruit.service.RecruitService;
+import entity.PageResult;
+import entity.Result;
 import enums.ResultEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.tensquare.recruit.pojo.Recruit;
-import com.tensquare.recruit.service.RecruitService;
-
-import entity.PageResult;
-import entity.Result;
+import java.util.List;
+import java.util.Map;
 
 /**
- * recruit控制器层
- * @author Administrator
+ * 职位控制器层
+ * @author TianCi.Xiong
+ * @since 2020/10/14 14:26
  */
 @RestController
 @CrossOrigin
@@ -105,4 +100,23 @@ public class RecruitController {
         return new Result(true, ResultEnum.DEL_SUCCESS.getCode(), ResultEnum.DEL_SUCCESS.getMsg());
     }
 
+    /**
+     * 推荐职位列表
+     * @return
+     */
+    @RequestMapping(value = "/search/recommend", method = RequestMethod.GET)
+    public Result recommend() {
+        // 查询状态为2并以创建日期降序排序，查询前4条记录
+        List<Recruit> list = recruitService.findTop4ByStateOrderByCreatetimeDesc("2");
+        return new Result(true, ResultEnum.QUERY_SUCCESS.getCode(), ResultEnum.QUERY_SUCCESS.getMsg(), list);
+    }
+
+    /**
+     * 最新职位列表
+     * @return
+     */
+    @RequestMapping(value = "/search/newlist", method = RequestMethod.GET)
+    public Result newlist() {
+        return new Result(true, ResultEnum.QUERY_SUCCESS.getCode(), ResultEnum.QUERY_SUCCESS.getMsg(), recruitService.newlist());
+    }
 }

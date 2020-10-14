@@ -86,7 +86,7 @@ public class EnterpriseService {
      */
     public void add(Enterprise enterprise) {
         // 雪花分布式ID生成器
-        enterprise.setId( idWorker.nextId()+"" );
+        enterprise.setId(idWorker.nextId() + "");
         enterpriseDao.save(enterprise);
     }
 
@@ -151,4 +151,12 @@ public class EnterpriseService {
         };
     }
 
+    /**
+     * 热门企业列表<br/>
+     * 查询企业表ishot字段为1的记录
+     * @return
+     */
+    public List<Enterprise> hotlist() {
+        return enterpriseDao.findByIshot("1");
+    }
 }

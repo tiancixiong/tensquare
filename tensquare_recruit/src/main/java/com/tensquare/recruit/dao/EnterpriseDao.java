@@ -13,5 +13,10 @@ import java.util.List;
  * @since 2020/10/14 12:48
  **/
 public interface EnterpriseDao extends JpaRepository<Enterprise, String>, JpaSpecificationExecutor<Enterprise> {
-
+    /**
+     * 根据热门状态获取企业列表
+     * @param ishot
+     * @return
+     */
+    public List<Enterprise> findByIshot(String ishot);
 }

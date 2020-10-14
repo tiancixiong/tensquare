@@ -1,22 +1,15 @@
 package com.tensquare.recruit.controller;
 
-import java.util.Map;
-
+import com.tensquare.recruit.pojo.Enterprise;
+import com.tensquare.recruit.service.EnterpriseService;
+import entity.PageResult;
+import entity.Result;
 import enums.ResultEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.tensquare.recruit.pojo.Enterprise;
-import com.tensquare.recruit.service.EnterpriseService;
-
-import entity.PageResult;
-import entity.Result;
+import java.util.Map;
 
 /**
  * 企业控制器层
@@ -105,4 +98,12 @@ public class EnterpriseController {
         return new Result(true, ResultEnum.DEL_SUCCESS.getCode(), ResultEnum.DEL_SUCCESS.getMsg());
     }
 
+    /**
+     * 查询热门企业
+     * @return
+     */
+    @RequestMapping(value = "/search/hotlist", method = RequestMethod.GET)
+    public Result hotlist() {
+        return new Result(true, ResultEnum.QUERY_SUCCESS.getCode(), ResultEnum.QUERY_SUCCESS.getMsg(), enterpriseService.hotlist());
+    }
 }
