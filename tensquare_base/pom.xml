@@ -11,11 +11,7 @@
     <artifactId>tensquare_base</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <name>tensquare_base</name>
-    <description>基础微服务</description>
-
-    <properties>
-        <java.version>1.8</java.version>
-    </properties>
+    <description>基础微服务模块</description>
 
     <dependencies>
         <dependency>

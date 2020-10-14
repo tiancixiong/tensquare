@@ -2,13 +2,13 @@ server:
   port: 9001
 spring:
   application:
-    name: tensquare-base #Ö¸¶¨·şÎñÃû
+    name: tensquare-base #æŒ‡å®šæœåŠ¡å
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/tensquare_base?characterEncoding=utf-8
+    url: jdbc:mysql://127.0.0.1:3306/tensquare_base?characterEncoding=utf-8&serverTimezone=GMT%2B8
     username: root
     password: 1234
   jpa:
     database: MySQL
     show-sql: true
-    generate©\ddl: true
+    generateâ€ddl: true
