@@ -76,7 +76,8 @@ public class ProblemService {
      * @param problem
      */
     public void add(Problem problem) {
-        // problem.setId( idWorker.nextId()+"" ); 雪花分布式ID生成器
+        // 雪花分布式ID生成器
+        problem.setId(idWorker.nextId() + "");
         problemDao.save(problem);
     }
 
@@ -138,6 +139,42 @@ public class ProblemService {
                 return cb.and(predicateList.toArray(new Predicate[predicateList.size()]));
             }
         };
+    }
+
+    /**
+     * 根据标签ID查询问题列表
+     * @param lableId 标签ID
+     * @param page    页码
+     * @param size    页大小
+     * @return
+     */
+    public Page<Problem> findNewListByLabelId(String lableId, int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page - 1, size);
+        return problemDao.findNewListByLabelId(lableId, pageRequest);
+    }
+
+    /**
+     * 根据标签ID查询热门问题列表
+     * @param lableId 标签ID
+     * @param page    页码
+     * @param size    页大小
+     * @return
+     */
+    public Page<Problem> findHotListByLabelId(String lableId, int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page - 1, size);
+        return problemDao.findHotListByLabelId(lableId, pageRequest);
+    }
+
+    /**
+     * 根据标签ID查询等待回答列表
+     * @param lableId 标签ID
+     * @param page    页码
+     * @param size    页大小
+     * @return
+     */
+    public Page<Problem> findWaitListByLabelId(String lableId, int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page - 1, size);
+        return problemDao.findWaitListByLabelId(lableId, pageRequest);
     }
 
 }
