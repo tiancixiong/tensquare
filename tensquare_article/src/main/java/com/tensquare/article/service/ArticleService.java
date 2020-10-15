@@ -13,6 +13,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -159,4 +160,22 @@ public class ArticleService {
         };
     }
 
+    /**
+     * 文章审核
+     * @param id
+     */
+    @Transactional
+    public void examine(String id) {
+        articleDao.examine(id);
+    }
+
+    /**
+     * 点赞
+     * @param id 文章ID
+     * @return
+     */
+    @Transactional
+    public int updateThumbup(String id) {
+        return articleDao.updateThumbup(id);
+    }
 }

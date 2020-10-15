@@ -97,4 +97,25 @@ public class ArticleController {
         return new Result(true, ResultEnum.DEL_SUCCESS.getCode(), ResultEnum.DEL_SUCCESS.getMsg());
     }
 
+    /**
+     * 审核
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/examine/{id}", method = RequestMethod.PUT)
+    public Result examine(@PathVariable String id) {
+        articleService.examine(id);
+        return new Result(true, ResultEnum.QUERY_SUCCESS.getCode(), "审核成功！");
+    }
+
+    /**
+     * 点赞
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/thumbup/{id}", method = RequestMethod.PUT)
+    public Result updateThumbup(@PathVariable String id) {
+        articleService.updateThumbup(id);
+        return new Result(true, ResultEnum.QUERY_SUCCESS.getCode(), "点赞成功");
+    }
 }
