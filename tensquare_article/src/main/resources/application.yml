@@ -14,3 +14,5 @@ spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss #日期格式化
     time-zone: GMT+8 #东八区
+  redis:
+    host: 192.168.220.132 #Redis服务器主机地址
