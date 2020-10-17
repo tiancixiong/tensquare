@@ -7,3 +7,5 @@ spring:
     mongodb:
       host: 192.168.220.132 #MongoDB服务器主机地址
       database: spitdb #数据库名
+  redis:
+    host: 192.168.220.132 #Redis服务器主机地址

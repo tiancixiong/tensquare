@@ -6,6 +6,8 @@ package enums;
  * @since 2020/10/13 19:24
  */
 public enum ResultEnum {
+    /** 成功 */
+    SUCCESS("20000", "查询成功"),
     /** 查询成功 */
     QUERY_SUCCESS("20000", "查询成功"),
     /** 添加成功 */
