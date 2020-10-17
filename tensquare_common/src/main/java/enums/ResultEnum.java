@@ -9,7 +9,7 @@ public enum ResultEnum {
     /** 查询成功 */
     QUERY_SUCCESS("20000", "查询成功"),
     /** 添加成功 */
-    ADD_SUCCESS("20000", "添加成功"),
+    ADD_SUCCESS("20000", "增加成功"),
     /** 修改成功 */
     EDIT_SUCCESS("20000", "修改成功"),
     /** 删除成功 */
