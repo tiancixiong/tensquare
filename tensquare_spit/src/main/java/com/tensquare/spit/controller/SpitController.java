@@ -2,9 +2,11 @@ package com.tensquare.spit.controller;
 
 import com.tensquare.spit.pojo.Spit;
 import com.tensquare.spit.service.SpitService;
+import entity.PageResult;
 import entity.Result;
 import enums.ResultEnum;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -70,4 +72,29 @@ public class SpitController {
         spitService.deleteById(id);
         return new Result(true, ResultEnum.DEL_SUCCESS.getCode(), ResultEnum.DEL_SUCCESS.getMsg());
     }
+
+    /**
+     * 根据上级ID查询吐槽分页数据
+     * @param page
+     * @param size
+     * @return
+     */
+    @RequestMapping(value = "/comment/{parentId}/{page}/{size}", method = RequestMethod.GET)
+    public Result findByParentid(@PathVariable String parentId, @PathVariable int page, @PathVariable int size) {
+        Page<Spit> pageList = spitService.findByParentid(parentId, page, size);
+        return new Result(true, ResultEnum.QUERY_SUCCESS.getCode(), ResultEnum.QUERY_SUCCESS.getMsg(),
+                new PageResult<Spit>(pageList.getTotalElements(), pageList.getContent()));
+    }
+
+    /**
+     * 点赞
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/thumbup/{id}", method = RequestMethod.PUT)
+    public Result updateThumbup(@PathVariable String id) {
+        spitService.updateThumbup(id);
+        return new Result(true, ResultEnum.QUERY_SUCCESS.getCode(), "点赞成功");
+    }
+
 }
