@@ -115,4 +115,15 @@ public class SpitService {
         mongoTemplate.updateFirst(query, update, "spit");
     }
 
+    /**
+     * 增加分享数
+     * @param id
+     */
+    public void updateShare(String id) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("_id").is(id));
+        Update update = new Update();
+        update.inc("share", 1);
+        mongoTemplate.updateFirst(query, update, "spit");
+    }
 }

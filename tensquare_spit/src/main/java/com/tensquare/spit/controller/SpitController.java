@@ -97,7 +97,7 @@ public class SpitController {
     @RequestMapping(value = "/thumbup/{id}", method = RequestMethod.PUT)
     public Result updateThumbup(@PathVariable String id) {
         //判断用户是否点过赞
-        String userid = "2023"; //后边我们会修改为当前登陆的用户
+        String userid = "2023"; //TODO 后边我们会修改为当前登陆的用户
         if (redisTemplate.opsForValue().get("thumbup_" + userid + "_" + id) != null) {
             return new Result(false, ResultEnum.REPERROR.getCode(), "你已经点过赞了");
         }
