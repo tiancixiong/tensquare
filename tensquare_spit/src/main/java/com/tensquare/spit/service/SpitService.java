@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import util.IdWorker;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -47,11 +48,24 @@ public class SpitService {
     }
 
     /**
-     * 增加
+     * 发布吐槽（或吐槽评论）
      * @param spit
      */
     public void add(Spit spit) {
         spit.set_id(idWorker.nextId() + ""); //主键值
+        spit.setPublishtime(new Date()); //发布日期
+        spit.setVisits(0); //浏览量
+        spit.setShare(0); //分享数
+        spit.setThumbup(0); //点赞数
+        spit.setComment(0); //回复数
+        spit.setState("1"); //状态
+        if (spit.getParentid() != null && !"".equals(spit.getParentid())) { //如果存在上级ID,父节点回复数量+1
+            Query query = new Query();
+            query.addCriteria(Criteria.where("_id").is(spit.getParentid()));
+            Update update = new Update();
+            update.inc("comment", 1);
+            mongoTemplate.updateFirst(query, update, "spit");
+        }
         spitDao.save(spit);
     }
 
@@ -88,6 +102,12 @@ public class SpitService {
      * @param id
      */
     public void updateThumbup(String id) {
+        // 方式一：执行效率不高
+//        Spit spit = spitDao.findById(id).get();
+//        spit.setThumbup(spit.getThumbup()+1);
+//        spitDao.save(spit);
+
+        // 方式二：使用原生mongo命令来实现自增 db.spit.update({"_id":"1"},{$inc:{thumbup:NumberInt(1)}})
         Query query = new Query();
         query.addCriteria(Criteria.where("_id").is(id));
         Update update = new Update();
