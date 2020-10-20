@@ -6,8 +6,9 @@ import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
- * admin实体类
- * @author Administrator
+ * 管理员_实体类
+ * @author TianCi.Xiong
+ * @since 2020/10/20 22:20
  */
 @Entity
 @Table(name = "tb_admin")

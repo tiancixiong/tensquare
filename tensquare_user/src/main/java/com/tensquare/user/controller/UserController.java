@@ -106,4 +106,21 @@ public class UserController {
         return new Result(true, ResultEnum.SUCCESS.getCode(), "发送成功");
     }
 
+    /**
+     * 用户登陆
+     * @param mobile
+     * @param password
+     * @return
+     */
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public Result login(String mobile, String password) {
+        User user = userService.findByMobileAndPassword(mobile, password);
+        if (user != null) {
+            return new Result(true, ResultEnum.SUCCESS.getCode(), "登陆成功");
+        } else {
+            return new Result(false, ResultEnum.LOGINERROR.getCode(), "用户名或密码错误");
+        }
+    }
+
+
 }

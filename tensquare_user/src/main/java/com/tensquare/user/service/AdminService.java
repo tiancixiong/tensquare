@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import util.IdWorker;
 
@@ -18,17 +19,18 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * admin服务层
- * @author Administrator
+ * 管理员_服务层
+ * @author TianCi.Xiong
+ * @since 2020/10/20 22:20
  */
 @Service
 public class AdminService {
-
     @Autowired
     private AdminDao adminDao;
-
     @Autowired
     private IdWorker idWorker;
+    @Autowired
+    BCryptPasswordEncoder encoder;
 
     /**
      * 查询全部列表
@@ -77,7 +79,10 @@ public class AdminService {
      * @param admin
      */
     public void add(Admin admin) {
-        admin.setId(idWorker.nextId() + "");//雪花分布式ID生成器
+        admin.setId(idWorker.nextId() + ""); //雪花分布式ID生成器
+        // 密码加密
+        String newpassword = encoder.encode(admin.getPassword());//加密后的密码
+        admin.setPassword(newpassword);
         adminDao.save(admin);
     }
 
@@ -127,6 +132,21 @@ public class AdminService {
                 return cb.and(predicateList.toArray(new Predicate[predicateList.size()]));
             }
         };
+    }
+
+    /**
+     * 根据登陆名和密码查询
+     * @param loginname
+     * @param password
+     * @return
+     */
+    public Admin findByLoginnameAndPassword(String loginname, String password) {
+        Admin admin = adminDao.findByLoginname(loginname);
+        if (admin != null && encoder.matches(password, admin.getPassword())) {
+            return admin;
+        } else {
+            return null;
+        }
     }
 
 }

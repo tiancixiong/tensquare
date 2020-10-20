@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 /**
- * admin控制器层
- * @author Administrator
+ * 管理员_控制器层
+ * @author TianCi.Xiong
+ * @since 2020/10/20 22:19
  */
 @RestController
 @CrossOrigin
@@ -94,6 +95,21 @@ public class AdminController {
     public Result delete(@PathVariable String id) {
         adminService.deleteById(id);
         return new Result(true, ResultEnum.DEL_SUCCESS.getCode(), ResultEnum.DEL_SUCCESS.getMsg());
+    }
+
+    /**
+     * 用户登陆
+     * @param loginMap
+     * @return
+     */
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public Result login(@RequestBody Map<String, String> loginMap) {
+        Admin admin = adminService.findByLoginnameAndPassword(loginMap.get("loginname"), loginMap.get("password"));
+        if (admin != null) {
+            return new Result(true, ResultEnum.SUCCESS.getCode(), "登陆成功");
+        } else {
+            return new Result(false, ResultEnum.LOGINERROR.getCode(), "用户名或密码错误");
+        }
     }
 
 }
