@@ -66,13 +66,13 @@ public class UserController {
     }
 
     /**
-     * 增加
+     * 用户注册
      * @param user
      */
-    @RequestMapping(method = RequestMethod.POST)
-    public Result add(@RequestBody User user) {
-        userService.add(user);
-        return new Result(true, ResultEnum.ADD_SUCCESS.getCode(), ResultEnum.ADD_SUCCESS.getMsg());
+    @RequestMapping(value = "/register/{code}", method = RequestMethod.POST)
+    public Result register(@RequestBody User user, @PathVariable String code) {
+        userService.add(user, code);
+        return new Result(true, ResultEnum.ADD_SUCCESS.getCode(), "注册成功");
     }
 
     /**
@@ -94,6 +94,16 @@ public class UserController {
     public Result delete(@PathVariable String id) {
         userService.deleteById(id);
         return new Result(true, ResultEnum.DEL_SUCCESS.getCode(), ResultEnum.DEL_SUCCESS.getMsg());
+    }
+
+    /**
+     * 发送短信验证码
+     * @param mobile
+     */
+    @RequestMapping(value = "/sendsms/{mobile}", method = RequestMethod.POST)
+    public Result sendsms(@PathVariable String mobile) {
+        userService.sendSms(mobile);
+        return new Result(true, ResultEnum.SUCCESS.getCode(), "发送成功");
     }
 
 }
