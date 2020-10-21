@@ -14,3 +14,9 @@ spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss #日期格式化
     time-zone: GMT+8 #东八区
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:6868/eureka
+  instance:
+    prefer-ip-address: true
