@@ -5,10 +5,13 @@ import com.tensquare.user.service.UserService;
 import entity.PageResult;
 import entity.Result;
 import enums.ResultEnum;
+import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+import util.JwtUtil;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -22,6 +25,10 @@ import java.util.Map;
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private HttpServletRequest request;
+    @Autowired
+    private JwtUtil jwtUtil;
 
     /**
      * 查询全部数据
@@ -92,6 +99,22 @@ public class UserController {
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public Result delete(@PathVariable String id) {
+        String authHeader = request.getHeader("Authorization");//获取头信息
+        if (authHeader == null) {
+            return new Result(false, ResultEnum.ACCESSERROR.getCode(), "权限不足");
+        }
+        if (!authHeader.startsWith("Bearer ")) {
+            return new Result(false, ResultEnum.ACCESSERROR.getCode(), "权限不足");
+        }
+        String token = authHeader.substring(7);//提取token
+        Claims claims = jwtUtil.parseJWT(token);
+        if (claims == null) {
+            return new Result(false, ResultEnum.ACCESSERROR.getCode(), "权限不足");
+        }
+        if (!"admin".equals(claims.get("roles"))) {
+            return new Result(false, ResultEnum.ACCESSERROR.getCode(), "权限不足");
+        }
+
         userService.deleteById(id);
         return new Result(true, ResultEnum.DEL_SUCCESS.getCode(), ResultEnum.DEL_SUCCESS.getMsg());
     }
@@ -121,6 +144,5 @@ public class UserController {
             return new Result(false, ResultEnum.LOGINERROR.getCode(), "用户名或密码错误");
         }
     }
-
 
 }

@@ -8,7 +8,9 @@ import enums.ResultEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+import util.JwtUtil;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -22,6 +24,8 @@ import java.util.Map;
 public class AdminController {
     @Autowired
     private AdminService adminService;
+    @Autowired
+    private JwtUtil jwtUtil;
 
     /**
      * 查询全部数据
@@ -106,7 +110,12 @@ public class AdminController {
     public Result login(@RequestBody Map<String, String> loginMap) {
         Admin admin = adminService.findByLoginnameAndPassword(loginMap.get("loginname"), loginMap.get("password"));
         if (admin != null) {
-            return new Result(true, ResultEnum.SUCCESS.getCode(), "登陆成功");
+            // 生成token
+            String token = jwtUtil.createJWT(admin.getId(), admin.getLoginname(), "admin");
+            Map map = new HashMap();
+            map.put("token", token);
+            map.put("name", admin.getLoginname());//登陆名
+            return new Result(true, ResultEnum.SUCCESS.getCode(), "登陆成功", map);
         } else {
             return new Result(false, ResultEnum.LOGINERROR.getCode(), "用户名或密码错误");
         }
