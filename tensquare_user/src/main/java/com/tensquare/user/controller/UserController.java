@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import util.JwtUtil;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -99,24 +100,13 @@ public class UserController {
      */
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     public Result delete(@PathVariable String id) {
-        String authHeader = request.getHeader("Authorization");//获取头信息
-        if (authHeader == null) {
-            return new Result(false, ResultEnum.ACCESSERROR.getCode(), "权限不足");
-        }
-        if (!authHeader.startsWith("Bearer ")) {
-            return new Result(false, ResultEnum.ACCESSERROR.getCode(), "权限不足");
-        }
-        String token = authHeader.substring(7);//提取token
-        Claims claims = jwtUtil.parseJWT(token);
+        Claims claims = (Claims) request.getAttribute("admin_claims");
         if (claims == null) {
-            return new Result(false, ResultEnum.ACCESSERROR.getCode(), "权限不足");
+            return new Result(true, ResultEnum.ACCESSERROR.getCode(), "无权访问");
         }
-        if (!"admin".equals(claims.get("roles"))) {
-            return new Result(false, ResultEnum.ACCESSERROR.getCode(), "权限不足");
-        }
-
         userService.deleteById(id);
-        return new Result(true, ResultEnum.DEL_SUCCESS.getCode(), ResultEnum.DEL_SUCCESS.getMsg());
+        return new Result(true, ResultEnum.DEL_SUCCESS.getCode(), "删除成功");
+
     }
 
     /**
@@ -136,10 +126,15 @@ public class UserController {
      * @return
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public Result login(String mobile, String password) {
-        User user = userService.findByMobileAndPassword(mobile, password);
+    public Result login(@RequestBody Map<String, String> loginMap) {
+        User user = userService.findByMobileAndPassword(loginMap.get("mobile"), loginMap.get("password"));
         if (user != null) {
-            return new Result(true, ResultEnum.SUCCESS.getCode(), "登陆成功");
+            String token = jwtUtil.createJWT(user.getId(), user.getNickname(), "user");
+            Map map = new HashMap();
+            map.put("token", token);
+            map.put("name", user.getNickname());//昵称
+            map.put("avatar", user.getAvatar());//头像
+            return new Result(true, ResultEnum.SUCCESS.getCode(), "登陆成功", map);
         } else {
             return new Result(false, ResultEnum.LOGINERROR.getCode(), "用户名或密码错误");
         }

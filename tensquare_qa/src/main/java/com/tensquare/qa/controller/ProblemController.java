@@ -5,10 +5,12 @@ import com.tensquare.qa.service.ProblemService;
 import entity.PageResult;
 import entity.Result;
 import enums.ResultEnum;
+import io.jsonwebtoken.Claims;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 /**
@@ -20,9 +22,10 @@ import java.util.Map;
 @CrossOrigin
 @RequestMapping("/problem")
 public class ProblemController {
-
     @Autowired
     private ProblemService problemService;
+    @Autowired
+    private HttpServletRequest request;
 
     /**
      * 查询全部数据
@@ -68,13 +71,19 @@ public class ProblemController {
     }
 
     /**
-     * 增加
+     * 发布问题
      * @param problem
      */
     @RequestMapping(method = RequestMethod.POST)
     public Result add(@RequestBody Problem problem) {
+        Claims claims = (Claims) request.getAttribute("user_claims");
+        if (claims == null) {
+            return new Result(false, ResultEnum.ACCESSERROR.getCode(), "无权访问");
+        }
+        problem.setUserid(claims.getId());
+
         problemService.add(problem);
-        return new Result(true, ResultEnum.ADD_SUCCESS.getCode(), ResultEnum.ADD_SUCCESS.getMsg());
+        return new Result(true, ResultEnum.ADD_SUCCESS.getCode(), "增加成功");
     }
 
     /**
