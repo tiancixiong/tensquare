@@ -9,8 +9,6 @@
     </parent>
 
     <artifactId>tensquare_base</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
-    <name>tensquare_base</name>
     <description>基础微服务模块</description>
 
     <dependencies>
