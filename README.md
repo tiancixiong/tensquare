@@ -15,11 +15,11 @@
 
 3. 技术架构图：
 
-   ![十次方技术架构图](//tiancixiong.coding.net/p/BlogIMG/d/BlogIMG/git/raw/master/blog/20201027_tensquare/image-20201027124345669.png)
+   ![十次方技术架构图](https://tiancixiong.coding.net/p/BlogIMG/d/BlogIMG/git/raw/master/blog/20201027_tensquare/image-20201027124345669.png)
 
 4. 功能架构图：
 
-   ![十次方功能架构图](//tiancixiong.coding.net/p/BlogIMG/d/BlogIMG/git/raw/master/blog/20201027_tensquare/image-20201027125212961.png)
+   ![十次方功能架构图](https://tiancixiong.coding.net/p/BlogIMG/d/BlogIMG/git/raw/master/blog/20201027_tensquare/image-20201027125212961.png)
 
 
 
